@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="HelloWorld.CreditPage">
+
+    <!--<AbsoluteLayout>
+        <BoxView BackgroundColor="#fff"  AbsoluteLayout.LayoutBounds="0,1,1,0.75" AbsoluteLayout.LayoutFlags="All"></BoxView>
+        <BoxView x:Name="banner" BackgroundColor="#f7f7f7"  AbsoluteLayout.LayoutBounds="0,0,1,0.25" AbsoluteLayout.LayoutFlags="All"></BoxView>
+        <StackLayout AbsoluteLayout.LayoutBounds="0.5,0" AbsoluteLayout.LayoutFlags="PositionProportional">
+            <Label Text="$11.95" TextColor="#33353a" FontSize="60" FontAttributes="Bold" ></Label>
+            <Button Text="Add $7.99 Credit" HeightRequest = "40" BackgroundColor="#1695A3" BorderRadius="15" FontSize="15" FontAttributes="Bold"></Button>
+        </StackLayout>
+        <StackLayout AbsoluteLayout.LayoutBounds="0,0.35" AbsoluteLayout.LayoutFlags="PositionProportional">
+            <Grid>
+                <Label TextColor="#28282c" FontSize="15" FontAttributes="Bold" Grid.Row="0" Grid.Column="0" HorizontalTextAlignment="Center">
+                    Why pay for credit?
+                </Label>
+                <Label FontSize="13" TextColor="#28282c" Grid.Row="1" Grid.Column="0" HorizontalTextAlignment="Center">
+                    Because you can reach people who aren’t on
+                </Label>
+                <Label FontSize="13" TextColor="#28282c" Grid.Row="2" Grid.Column="0" HorizontalTextAlignment="Center">
+                    SkyApp by calling mobile and landlinenumbers,
+                </Label>
+                <Label FontSize="13" TextColor="#28282c" Grid.Row="3" Grid.Column="0" HorizontalTextAlignment="Center">
+                    or spending SMS, at low-cost rates.
+                </Label>
+            </Grid>
+        </StackLayout>
+    </AbsoluteLayout>-->
+    <RelativeLayout BackgroundColor="#fff">
+        <BoxView x:Name="banner" BackgroundColor="Aqua" 
+                    RelativeLayout.WidthConstraint="{
+        ConstraintExpression Type=RelativeToParent, 
+        Property=Width, 
+        Factor=1}"
+                    RelativeLayout.HeightConstraint="{
+        ConstraintExpression Type=RelativeToParent, 
+        Property=Height, 
+        Factor=0.3}">
+            
+        </BoxView>
+        <BoxView BackgroundColor="Silver" 
+                 RelativeLayout.YConstraint="{
+            ConstraintExpression Type=RelativeToView, 
+            ElementName=banner, 
+            Property=Height, 
+            Factor=1,Constant=-30}"
+                 RelativeLayout.XConstraint="{
+            ConstraintExpression Type=RelativeToView, 
+            ElementName=banner, 
+            Property=Width, 
+            Factor=0.3,Constant=20}"
+                 
+                 RelativeLayout.WidthConstraint="{
+            ConstraintExpression Type=RelativeToView, 
+            ElementName=banner, 
+            Property=Width, 
+            Factor=0.3}"
+                 RelativeLayout.HeightConstraint="{
+            ConstraintExpression Type=RelativeToView, 
+            ElementName=banner, 
+            Property=Height, 
+            Factor=0.4}"
+                 >
+            
+            
+        </BoxView>
+        
+    </RelativeLayout>
+    
+</ContentPage>

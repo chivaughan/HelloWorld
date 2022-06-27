@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="HelloWorld.BookingsPage">
+    <StackLayout>
+        <SearchBar x:Name="search" TextChanged="search_TextChanged" Placeholder="Search City..."></SearchBar>
+        <ListView x:Name="lstBookings" IsPullToRefreshEnabled="true" HasUnevenRows="true" Refreshing="lstBookings_Refreshing">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <ViewCell.ContextActions>
+                            <MenuItem Text="Delete" IsDestructive="True" CommandParameter="{Binding .}" Clicked="MenuItem_Clicked" >
+                                
+                            </MenuItem>
+                        </ViewCell.ContextActions>
+                        <StackLayout Padding="10">
+                            <StackLayout Orientation="Horizontal">
+                                <StackLayout>
+                                    <Image x:Name="image" Source="{Binding ImageUrl}" HeightRequest="150" WidthRequest="150" Aspect="Fill"></Image>
+                                </StackLayout>
+                                <StackLayout HorizontalOptions="StartAndExpand">                                    
+                                    <Label Text="{Binding City}" FontSize="13" FontAttributes="Bold"></Label>
+                                    <Label Text="{Binding State}" FontSize="13" FontAttributes="Bold"></Label>
+                                    <Label Text="{Binding StateCode}" FontSize="13" FontAttributes="Bold"></Label>
+                                    <Label Text="{Binding Country}" FontSize="13" FontAttributes="Bold"></Label>
+                                </StackLayout>
+                            </StackLayout>
+                            <AbsoluteLayout>
+                                <StackLayout Orientation="Horizontal" AbsoluteLayout.LayoutBounds="1,0" AbsoluteLayout.LayoutFlags="PositionProportional">
+                                    <Label Text="{Binding StartDate, StringFormat='{0:MMM d, yyyy}'}"></Label>
+                                    <Label Text="-"></Label>
+                                    <Label Text="{Binding EndDate, StringFormat='{0:MMM d, yyyy}'}"></Label>
+                                </StackLayout>
+                            </AbsoluteLayout>
+                            
+                        </StackLayout>
+                    </ViewCell>
+                    
+                    
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </StackLayout>
+</ContentPage>
