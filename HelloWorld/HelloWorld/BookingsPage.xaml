@@ -4,7 +4,7 @@
              x:Class="HelloWorld.BookingsPage">
     <StackLayout>
         <SearchBar x:Name="search" TextChanged="search_TextChanged" Placeholder="Search City..."></SearchBar>
-        <ListView x:Name="lstBookings" IsPullToRefreshEnabled="true" HasUnevenRows="true" Refreshing="lstBookings_Refreshing">
+        <ListView Header="Recent Bookings" x:Name="lstBookings" IsPullToRefreshEnabled="true" HasUnevenRows="true" Refreshing="lstBookings_Refreshing">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>

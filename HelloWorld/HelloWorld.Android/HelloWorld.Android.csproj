@@ -59,6 +59,9 @@
     <Reference Include="System.Numerics.Vectors" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Xam.Plugins.Forms.ImageCircle">
+      <Version>3.0.0.5</Version>
+    </PackageReference>
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2478" />
     <PackageReference Include="Xamarin.Essentials" Version="1.7.3" />
   </ItemGroup>
@@ -79,6 +82,12 @@
     <AndroidResource Include="Resources\drawable-hdpi\right" />
     <AndroidResource Include="Resources\drawable-xhdpi\left" />
     <AndroidResource Include="Resources\drawable-xhdpi\right" />
+    <AndroidResource Include="Resources\drawable\heart" />
+    <AndroidResource Include="Resources\drawable-hdpi\heart" />
+    <AndroidResource Include="Resources\drawable-hdpi\user" />
+    <AndroidResource Include="Resources\drawable-xhdpi\user" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\heart" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\user" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\values\styles.xml" />
@@ -96,12 +105,17 @@
     <AndroidResource Include="Resources\mipmap-xxxhdpi\icon.png" />
     <AndroidResource Include="Resources\mipmap-xxxhdpi\launcher_foreground.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\user.png" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HelloWorld\HelloWorld.csproj">
       <Project>{DCF93209-E4FB-4C74-81B9-A392B1E72F15}</Project>
       <Name>HelloWorld</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xhdpi\heart.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

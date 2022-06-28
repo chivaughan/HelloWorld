@@ -90,7 +90,7 @@ namespace HelloWorld
             else
             {
                 ObservableCollection<Booking> fetchedBookings = new ObservableCollection<Booking>();
-                fetchedBookings = _bookings.Where(x => x.StreetAddress.ToLower().StartsWith(searchQuery.ToLower())) as ObservableCollection<Booking>;
+                fetchedBookings = _bookings.ToList().Where(x => x.City.ToLower().StartsWith(searchQuery.ToLower())) as ObservableCollection<Booking>;
                 return fetchedBookings;
             }
             

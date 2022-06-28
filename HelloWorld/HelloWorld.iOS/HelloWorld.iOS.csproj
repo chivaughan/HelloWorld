@@ -123,6 +123,9 @@
     <Reference Include="System.Numerics.Vectors" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Xam.Plugins.Forms.ImageCircle">
+      <Version>3.0.0.5</Version>
+    </PackageReference>
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2478" />
     <PackageReference Include="Xamarin.Essentials" Version="1.7.3" />
   </ItemGroup>
@@ -150,5 +153,23 @@
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\right%403x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\heart.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\heart%402x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\heart%403x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\user.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\user%402x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\user%403x.png" />
   </ItemGroup>
 </Project>
