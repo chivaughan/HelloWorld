@@ -29,9 +29,9 @@ namespace HelloWorld.Services
 
         public string FetchRandomImageUrl()
         {
-            int usersCount = GetAllImages().Count();
+            int imagesCount = GetAllImages().Count();
             Random rand = new Random();
-            int randomIndex = rand.Next(usersCount);
+            int randomIndex = rand.Next(imagesCount);
             string imageUrl = GetAllImages()[randomIndex];
             return imageUrl;
         }
