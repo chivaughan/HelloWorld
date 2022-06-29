@@ -1,5 +1,6 @@
 ﻿using HelloWorld.Models;
 using HelloWorld.Services;
+using SQLite;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -15,23 +16,34 @@ namespace HelloWorld
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ContactsPage : ContentPage
     {
-        private ContactService _contactService = new ContactService();
-        private ObservableCollection<Contact> _contacts =  new ObservableCollection<Contact>();
-        
+        private ObservableCollection<Contact> _contacts;
+        private SQLiteAsyncConnection _connection;
         public ContactsPage()
         {
             InitializeComponent();
-            _contacts = _contactService.GetAllContacts();
-            lstContacts.ItemsSource = _contacts;
+            _connection = DependencyService.Get<ISQLiteDb>().GetConnection();
         }
 
+        protected override async void OnAppearing()
+        {
+            await _connection.CreateTableAsync<Contact>();
+            var contacts = await _connection.Table<Contact>().ToListAsync();
+            _contacts = new ObservableCollection<Contact>(contacts);
+            lstContacts.ItemsSource = _contacts;
+
+            base.OnAppearing();
+        }
         private async void MenuItem_Clicked(object sender, EventArgs e)
         {
             var menuItem = sender as MenuItem;
             var contact = menuItem.CommandParameter as Contact;
             var response = await DisplayAlert("Confirm Delete", "Are you sure you want to delete this contact?", "Yes", "No");
             if (response)
+            {
                 _contacts.Remove(contact);
+                await _connection.DeleteAsync(contact);
+            }              
+                
         }
 
         private void btnAddContact_Clicked(object sender, EventArgs e)
@@ -39,8 +51,11 @@ namespace HelloWorld
             Navigation.PushAsync(new ContactDetailsPage());
         }
 
-        private void lstContacts_Refreshing(object sender, EventArgs e)
+        private async void lstContacts_Refreshing(object sender, EventArgs e)
         {
+            var contacts = await _connection.Table<Contact>().ToListAsync();
+
+            _contacts = new ObservableCollection<Contact>(contacts);
             lstContacts.ItemsSource = _contacts;
             lstContacts.EndRefresh();
         }

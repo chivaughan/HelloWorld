@@ -1,5 +1,6 @@
 ﻿using HelloWorld.Models;
 using HelloWorld.Services;
+using SQLite;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -15,8 +16,7 @@ namespace HelloWorld
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ContactDetailsPage : ContentPage
     {
-        private ContactService _contactService = new ContactService();
-        private ObservableCollection<Contact> _contacts = new ObservableCollection<Contact>();
+        private SQLiteAsyncConnection _connection;
 
         // This contructor will be used to load contact details to be edited
         public ContactDetailsPage(Contact contact)
@@ -25,7 +25,7 @@ namespace HelloWorld
                 throw new ArgumentNullException("contact");
             BindingContext = contact;
             InitializeComponent();
-            _contacts = _contactService.GetAllContacts();
+            _connection = DependencyService.Get<ISQLiteDb>().GetConnection();
             this.Title = "Edit Contact";
         }
 
@@ -35,13 +35,14 @@ namespace HelloWorld
         public ContactDetailsPage()
         {
             InitializeComponent();
+            _connection = DependencyService.Get<ISQLiteDb>().GetConnection();
             this.Title = "Add Contact";
         }
-        private void btnSave_Clicked(object sender, EventArgs e)
+        private async void btnSave_Clicked(object sender, EventArgs e)
         {
             if (String.IsNullOrWhiteSpace(FirstName.Text) || String.IsNullOrWhiteSpace(LastName.Text))
             {
-                DisplayAlert("Name Required", "First & last name is required", "Ok");
+                await DisplayAlert("Name Required", "First & last name is required", "Ok");
                 return;
             }
             else
@@ -59,8 +60,9 @@ namespace HelloWorld
                     contact.Blocked = Blocked.On;
                     contact.ImageUrl = helper.FetchRandomImageUrl();
                     contact.ContactGroup = ContactGroup.Text;
-                    DisplayAlert("Saved", "Contact saved", "Ok");
-                    Navigation.PopAsync();
+                    await _connection.UpdateAsync(contact);
+                    await DisplayAlert("Saved", "Contact saved", "Ok");
+                    await Navigation.PopAsync();
                 }
                 else
                 {
@@ -68,7 +70,6 @@ namespace HelloWorld
                     Helper helper = new Helper();
                     Contact contact = new Contact
                     {
-                        Id = _contacts.Count,
                         FirstName = FirstName.Text,
                         LastName = LastName.Text,
                         Phone = Phone.Text,
@@ -79,9 +80,9 @@ namespace HelloWorld
                         ContactGroup = ContactGroup.Text
                     };
 
-                    _contacts.Add(contact);
-                    DisplayAlert("Saved", "Contact saved", "Ok");
-                    Navigation.PopAsync();
+                    await _connection.InsertAsync(contact);
+                    await DisplayAlert("Saved", "Contact saved", "Ok");
+                    await Navigation.PopAsync();
                 }
             }
                 

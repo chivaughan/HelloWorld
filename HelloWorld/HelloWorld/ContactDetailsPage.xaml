@@ -23,7 +23,7 @@
                 <TableSection Title="Contact Group">
                     <ViewCell Tapped="ViewCell_Tapped">
                         <StackLayout Orientation="Horizontal" Padding="13,5">
-                            <Label Text="Contact Group" VerticalOptions="Center"></Label>
+                            <Label Text="Select Contact Group" VerticalOptions="Center"></Label>
                             <Label 
                                 x:Name="ContactGroup" 
                                 VerticalOptions="Center" 
