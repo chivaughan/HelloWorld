@@ -10,7 +10,7 @@ namespace HelloWorld
         {
             InitializeComponent();
 
-            MainPage = new NavigationPage(new InstagramPage());
+            MainPage = new NavigationPage(new ContactsPage());
         }
 
         protected override void OnStart()
