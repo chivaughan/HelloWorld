@@ -18,18 +18,28 @@ namespace HelloWorld
     {
         private ObservableCollection<Contact> _contacts;
         private SQLiteAsyncConnection _connection;
+        bool _firstLoad;
         public ContactsPage()
         {
             InitializeComponent();
+            _firstLoad = true;
             _connection = DependencyService.Get<ISQLiteDb>().GetConnection();
         }
 
         protected override async void OnAppearing()
         {
-            await _connection.CreateTableAsync<Contact>();
-            var contacts = await _connection.Table<Contact>().ToListAsync();
-            _contacts = new ObservableCollection<Contact>(contacts);
-            lstContacts.ItemsSource = _contacts;
+            // We should execute the connection async actions here if this is the first load
+            // After this execution, we should set the flag to false
+            if (_firstLoad)
+            {
+                await _connection.CreateTableAsync<Contact>();
+                var contacts = await _connection.Table<Contact>().ToListAsync();
+                _contacts = new ObservableCollection<Contact>(contacts);
+                lstContacts.ItemsSource = _contacts;
+
+                // Set the flag to false
+                _firstLoad = false;
+            }            
 
             base.OnAppearing();
         }
