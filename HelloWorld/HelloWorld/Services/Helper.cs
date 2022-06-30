@@ -37,6 +37,6 @@ namespace HelloWorld.Services
         }
 
         public const string MovieRequestUri = "https://api.themoviedb.org/3/search/movie";
-        public const string MovieAPI_Key = "12b01729e9b5d623f878c6a4e1c30fde";
+        public const string MovieAPI_Key = "YOUR API KEY HERE";
     }
 }
