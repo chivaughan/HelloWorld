@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="HelloWorld.MovieDetailsPage" Title="{Binding original_title}">
+    <StackLayout>
+        <Image Source="{Binding poster_path, StringFormat='https://image.tmdb.org/t/p/w500{0}'}" HeightRequest="400" HorizontalOptions="FillAndExpand" Aspect="AspectFit"></Image>
+        <ScrollView>
+            <StackLayout Padding="10,5">
+                <Label Text="{Binding original_title}" FontAttributes="Bold" FontSize="20"></Label>
+                <Label Text="{Binding release_date}" FontSize="13"></Label>
+                <Label Text="{Binding overview}" FontSize="16"></Label>
+            </StackLayout>            
+        </ScrollView>
+        
+    </StackLayout>
+</ContentPage>

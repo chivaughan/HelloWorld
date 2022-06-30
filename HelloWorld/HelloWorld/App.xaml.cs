@@ -10,7 +10,7 @@ namespace HelloWorld
         {
             InitializeComponent();
 
-            MainPage = new NavigationPage(new ContactsPage());
+            MainPage = new NavigationPage(new MoviesPage());
         }
 
         protected override void OnStart()

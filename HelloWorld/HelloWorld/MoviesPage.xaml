@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="HelloWorld.MoviesPage" NavigationPage.HasNavigationBar="False" Title="Movies">
+    <StackLayout>
+        <SearchBar Placeholder="Search Title..." x:Name="searchMovies" TextChanged="searchMovies_TextChanged"></SearchBar>
+        <StackLayout Orientation="Horizontal" Padding="10,5">
+            <Label Text="Include Adult Movies"></Label>
+            <Switch IsToggled="False" x:Name="switchAdult" HorizontalOptions="EndAndExpand" Toggled="switchAdult_Toggled"></Switch>
+        </StackLayout>
+        
+        <ListView x:Name="lstMovies" ItemSelected="lstMovies_ItemSelected" IsVisible="False" HasUnevenRows="True">
+            <ListView.ItemTemplate>                
+                <DataTemplate>
+                    <ImageCell ImageSource="{Binding poster_path, StringFormat='https://image.tmdb.org/t/p/w500{0}'}" Text="{Binding original_title}" Detail="{Binding release_date}"></ImageCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <Label Text="Enter a movie title to search" x:Name="lblNoMovies" HorizontalOptions="Center" IsVisible="True" VerticalOptions="Center"></Label>
+    </StackLayout>
+</ContentPage>

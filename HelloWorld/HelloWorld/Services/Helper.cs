@@ -5,7 +5,7 @@ using System.Text;
 
 namespace HelloWorld.Services
 {
-    internal class Helper
+    public class Helper
     {
         private List<string> GetAllImages()
         {
@@ -35,5 +35,8 @@ namespace HelloWorld.Services
             string imageUrl = GetAllImages()[randomIndex];
             return imageUrl;
         }
+
+        public const string MovieRequestUri = "https://api.themoviedb.org/3/search/movie";
+        public const string MovieAPI_Key = "12b01729e9b5d623f878c6a4e1c30fde";
     }
 }
