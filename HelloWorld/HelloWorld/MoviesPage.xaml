@@ -8,7 +8,7 @@
             <Label Text="Include Adult Movies"></Label>
             <Switch IsToggled="False" x:Name="switchAdult" HorizontalOptions="EndAndExpand" Toggled="switchAdult_Toggled"></Switch>
         </StackLayout>
-        
+        <Label x:Name="lblNumberOfMovies" IsVisible="{Binding Source={x:Reference lstMovies}, Path=IsVisible}" HorizontalOptions="Center" VerticalOptions="Center"></Label>
         <ListView x:Name="lstMovies" ItemSelected="lstMovies_ItemSelected" IsVisible="False" HasUnevenRows="True">
             <ListView.ItemTemplate>                
                 <DataTemplate>

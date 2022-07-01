@@ -68,6 +68,7 @@ namespace HelloWorld
                     }
 
                     lstMovies.ItemsSource = _movies;
+                    lblNumberOfMovies.Text = _movies.Count().ToString() + " movies found";                    
                     lstMovies.IsVisible = true;
                     lblNoMovies.IsVisible = false;
                 }
