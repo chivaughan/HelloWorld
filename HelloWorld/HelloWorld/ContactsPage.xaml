@@ -2,17 +2,30 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="HelloWorld.ContactsPage" NavigationPage.HasNavigationBar="False"
-             xmlns:ic="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin">
+             xmlns:ic="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin" Title="Contacts">
     <StackLayout>
-        <Button Text="+ Add" x:Name="btnAddContact" Clicked="btnAddContact_Clicked" HorizontalOptions="End"></Button>
-        <ListView Header="CONTACTS" x:Name="lstContacts" IsPullToRefreshEnabled="true" HasUnevenRows="true" Refreshing="lstContacts_Refreshing" ItemSelected="lstContacts_ItemSelected">
+        <StackLayout Orientation="Horizontal" Padding="5,5">
+            <Button Text="Refresh" Command="{Binding LoadContactsCommand}" HorizontalOptions="Start">
+            </Button>
+            <Button Text="+ Add" Command="{Binding GoToContactDetailsPageCommand}" HorizontalOptions="EndAndExpand">
+            </Button>            
+        </StackLayout>
+        
+        <ListView 
+            Header="CONTACTS" 
+            ItemsSource="{Binding Contacts}"
+            x:Name="lstContacts" 
+            IsPullToRefreshEnabled="true" 
+            HasUnevenRows="true" 
+            Refreshing="lstContacts_Refreshing" 
+            ItemSelected="lstContacts_ItemSelected" 
+            SelectedItem="{Binding SelectedContact}">
             
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
                         <ViewCell.ContextActions>
-                            <MenuItem Text="Delete" IsDestructive="True" CommandParameter="{Binding .}" Clicked="MenuItem_Clicked">
-
+                            <MenuItem Text="Delete" IsDestructive="True" CommandParameter="{Binding .}" Clicked="MenuItem_Clicked" >
                             </MenuItem>
                         </ViewCell.ContextActions>
                         <StackLayout Padding="10">

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace HelloWorld
+namespace HelloWorld.Models.Movie
 {
-    public class Result
+    public class Movie
     {
         public bool adult { get; set; }
         public string backdrop_path { get; set; }

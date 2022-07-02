@@ -1,5 +1,6 @@
 ﻿using HelloWorld.Models;
 using HelloWorld.Services;
+using HelloWorld.ViewModels;
 using SQLite;
 using System;
 using System.Collections.Generic;
@@ -16,17 +17,21 @@ namespace HelloWorld
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ContactDetailsPage : ContentPage
     {
-        private SQLiteAsyncConnection _connection;
+        Helper helper = new Helper();
+
+        public ContactViewModel ViewModel
+        {
+            get { return BindingContext as ContactViewModel; }
+            set { BindingContext = value; }
+        }
 
         // This contructor will be used to load contact details to be edited
-        public ContactDetailsPage(Contact contact)
+        public ContactDetailsPage(ContactViewModel contactViewModel)
         {
-            if (contact == null)
+            if (contactViewModel.SelectedContact == null)
                 throw new ArgumentNullException("contact");
-            BindingContext = contact;
+            ViewModel = contactViewModel;
             InitializeComponent();
-            _connection = DependencyService.Get<ISQLiteDb>().GetConnection();
-            this.Title = "Edit Contact";
         }
 
         /// <summary>
@@ -34,9 +39,17 @@ namespace HelloWorld
         /// </summary>
         public ContactDetailsPage()
         {
+            ViewModel = new ContactViewModel(new PageService());
             InitializeComponent();
-            _connection = DependencyService.Get<ISQLiteDb>().GetConnection();
-            this.Title = "Add Contact";
+        }
+
+        protected override void OnDisappearing()
+        {
+            // Refresh the contacts in the view model by making a fresh copy
+            // This will help us deselect the listview
+            ViewModel.SelectedContact = null;
+            ViewModel.Contacts = new ObservableCollection<Contact>(ViewModel.Contacts);
+            base.OnDisappearing();
         }
         private async void btnSave_Clicked(object sender, EventArgs e)
         {
@@ -47,46 +60,20 @@ namespace HelloWorld
             }
             else
             {
-                if (BindingContext != null)
+                if (ViewModel.SelectedContact != null)
                 {
                     // At this point, we know it is an update action
-                    Contact contact = this.BindingContext as Contact;
-                    Helper helper = new Helper();
-                    contact.FirstName = FirstName.Text;
-                    contact.LastName = LastName.Text;
-                    contact.Phone = Phone.Text;
-                    contact.Address = Address.Text;
-                    contact.Email = Email.Text;
-                    contact.Blocked = Blocked.On;
-                    contact.ImageUrl = helper.FetchRandomImageUrl();
-                    contact.ContactGroup = ContactGroup.Text;
-                    await _connection.UpdateAsync(contact);
-                    await DisplayAlert("Saved", "Contact saved", "Ok");
-                    await Navigation.PopAsync();
+                    // Fetch the selected contact we have in the view model
+                    // and update the contact's details
+                    await ViewModel.UpdateContact(ViewModel.SelectedContact, FirstName.Text, LastName.Text, Phone.Text, Address.Text, Email.Text, Blocked.On, helper.FetchRandomImageUrl(), ContactGroup.Text);
                 }
                 else
                 {
-                    // It is a new entry
-                    Helper helper = new Helper();
-                    Contact contact = new Contact
-                    {
-                        FirstName = FirstName.Text,
-                        LastName = LastName.Text,
-                        Phone = Phone.Text,
-                        Address = Address.Text,
-                        Email = Email.Text,
-                        Blocked = Blocked.On,
-                        ImageUrl = helper.FetchRandomImageUrl(),
-                        ContactGroup = ContactGroup.Text
-                    };
-
-                    await _connection.InsertAsync(contact);
-                    await DisplayAlert("Saved", "Contact saved", "Ok");
-                    await Navigation.PopAsync();
+                    // It is a new entry. So we add the contact
+                    await ViewModel.AddContact(FirstName.Text, LastName.Text, Phone.Text, Address.Text, Email.Text, Blocked.On, helper.FetchRandomImageUrl(), ContactGroup.Text);
                 }
             }
-                
-            
+
         }
 
         private void ViewCell_Tapped(object sender, EventArgs e)

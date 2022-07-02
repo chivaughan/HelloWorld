@@ -1,4 +1,5 @@
 ﻿using HelloWorld.Models;
+using HelloWorld.Models.Movie;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace HelloWorld
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MovieDetailsPage : ContentPage
     {
-        public MovieDetailsPage(Result movie)
+        public MovieDetailsPage(Movie movie)
         {
             if (movie == null)
                 return;

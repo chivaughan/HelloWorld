@@ -3,19 +3,47 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="HelloWorld.MoviesPage" NavigationPage.HasNavigationBar="False" Title="Movies">
     <StackLayout>
-        <SearchBar Placeholder="Search Title..." x:Name="searchMovies" TextChanged="searchMovies_TextChanged"></SearchBar>
+        <SearchBar 
+            Placeholder="Search Title..." 
+            x:Name="searchMovies" 
+            TextChanged="searchMovies_TextChanged">            
+        </SearchBar>
         <StackLayout Orientation="Horizontal" Padding="10,5">
             <Label Text="Include Adult Movies"></Label>
             <Switch IsToggled="False" x:Name="switchAdult" HorizontalOptions="EndAndExpand" Toggled="switchAdult_Toggled"></Switch>
         </StackLayout>
-        <Label x:Name="lblNumberOfMovies" IsVisible="{Binding Source={x:Reference lstMovies}, Path=IsVisible}" HorizontalOptions="Center" VerticalOptions="Center"></Label>
-        <ListView x:Name="lstMovies" ItemSelected="lstMovies_ItemSelected" IsVisible="False" HasUnevenRows="True">
+        <Label 
+            Text="{Binding Path=Movies.Count, StringFormat='{0} movies found'}" 
+            IsVisible="{Binding HasMovies}" 
+            HorizontalOptions="Center" 
+            VerticalOptions="Center">            
+        </Label>
+        <ListView 
+            IsVisible="{Binding HasMovies}"
+            ItemsSource="{Binding Movies}" 
+            ItemSelected="lstMovies_ItemSelected"
+            HasUnevenRows="True"
+            SelectedItem="{Binding SelectedMovie, Mode=TwoWay}">
             <ListView.ItemTemplate>                
                 <DataTemplate>
-                    <ImageCell ImageSource="{Binding poster_path, StringFormat='https://image.tmdb.org/t/p/w500{0}'}" Text="{Binding original_title}" Detail="{Binding release_date}"></ImageCell>
+                    <ImageCell                        
+                        ImageSource="{Binding poster_path, StringFormat='https://image.tmdb.org/t/p/w500{0}'}" 
+                        Text="{Binding original_title}" 
+                        Detail="{Binding release_date}">                        
+                    </ImageCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <Label Text="Enter a movie title to search" x:Name="lblNoMovies" HorizontalOptions="Center" IsVisible="True" VerticalOptions="Center"></Label>
+        <Label 
+            Text="Enter a movie title to search" 
+            HorizontalOptions="Center" 
+            IsVisible="True" 
+            VerticalOptions="Center">
+            <Label.Triggers>
+                <DataTrigger TargetType="Label" Binding="{Binding HasMovies}" Value="True">
+                    <Setter Property="IsVisible" Value="False"></Setter>
+                </DataTrigger>
+            </Label.Triggers>
+        </Label>
     </StackLayout>
 </ContentPage>

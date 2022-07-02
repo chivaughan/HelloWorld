@@ -1,4 +1,5 @@
-﻿using SQLite;
+﻿using HelloWorld.ViewModels;
+using SQLite;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -7,9 +8,8 @@ using System.Text;
 
 namespace HelloWorld.Models
 {
-    public class Contact :INotifyPropertyChanged
+    public class Contact
     {
-        public event PropertyChangedEventHandler PropertyChanged;
         private string _fullName;
         
         [PrimaryKey, AutoIncrement]
@@ -23,22 +23,8 @@ namespace HelloWorld.Models
 
         public string FullName
         {
-            get
-            {
-                return FirstName + " " + LastName;
-            }
-            set 
-            {
-                if (_fullName == value)
-                    return;
-                _fullName = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            get{return _fullName = FirstName + " " + LastName;}
+            set { value = _fullName; }
         }
 
         [MaxLength(100)]

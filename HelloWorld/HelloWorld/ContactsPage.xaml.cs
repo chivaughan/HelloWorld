@@ -1,5 +1,6 @@
 ﻿using HelloWorld.Models;
 using HelloWorld.Services;
+using HelloWorld.ViewModels;
 using SQLite;
 using System;
 using System.Collections.Generic;
@@ -16,67 +17,49 @@ namespace HelloWorld
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ContactsPage : ContentPage
     {
-        private ObservableCollection<Contact> _contacts;
-        private SQLiteAsyncConnection _connection;
+       public ContactViewModel ViewModel
+        {
+            get { return BindingContext as ContactViewModel; }
+            set { BindingContext = value; }
+        }
         bool _firstLoad;
         public ContactsPage()
         {
+            ViewModel = new ContactViewModel(new PageService());
             InitializeComponent();
             _firstLoad = true;
-            _connection = DependencyService.Get<ISQLiteDb>().GetConnection();
         }
 
-        protected override async void OnAppearing()
+        protected override void OnAppearing()
         {
             // We should execute the connection async actions here if this is the first load
             // After this execution, we should set the flag to false
             if (_firstLoad)
             {
-                await _connection.CreateTableAsync<Contact>();
-                var contacts = await _connection.Table<Contact>().ToListAsync();
-                _contacts = new ObservableCollection<Contact>(contacts);
-                lstContacts.ItemsSource = _contacts;
-
+                ViewModel.LoadContactsCommand.Execute(null);
                 // Set the flag to false
                 _firstLoad = false;
             }            
 
             base.OnAppearing();
         }
-        private async void MenuItem_Clicked(object sender, EventArgs e)
+
+        private void MenuItem_Clicked(object sender, EventArgs e)
         {
             var menuItem = sender as MenuItem;
-            var contact = menuItem.CommandParameter as Contact;
-            var response = await DisplayAlert("Confirm Delete", "Are you sure you want to delete this contact?", "Yes", "No");
-            if (response)
-            {
-                _contacts.Remove(contact);
-                await _connection.DeleteAsync(contact);
-            }              
-                
+            ViewModel.DeleteContactCommand.Execute(menuItem.CommandParameter);
         }
 
-        private void btnAddContact_Clicked(object sender, EventArgs e)
-        {
-            Navigation.PushAsync(new ContactDetailsPage());
-        }
 
-        private async void lstContacts_Refreshing(object sender, EventArgs e)
+        private void lstContacts_Refreshing(object sender, EventArgs e)
         {
-            var contacts = await _connection.Table<Contact>().ToListAsync();
-
-            _contacts = new ObservableCollection<Contact>(contacts);
-            lstContacts.ItemsSource = _contacts;
+            ViewModel.LoadContactsCommand.Execute(null);
             lstContacts.EndRefresh();
         }
 
         private void lstContacts_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            if (lstContacts.SelectedItem == null)
-                return;
-            var contact = lstContacts.SelectedItem as Contact;
-            Navigation.PushAsync(new ContactDetailsPage(contact));
-            lstContacts.SelectedItem = null;
+            ViewModel.SelectContactCommand.Execute(e.SelectedItem);
         }
 
         
