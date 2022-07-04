@@ -5,6 +5,7 @@ namespace HelloWorld
     public interface ISQLiteDb
     {
         SQLiteAsyncConnection GetConnection();
+                
     }
 }
 

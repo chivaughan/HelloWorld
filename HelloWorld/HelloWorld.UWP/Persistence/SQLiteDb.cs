@@ -17,6 +17,7 @@ namespace HelloWorld.Windows
         	var path = Path.Combine(documentsPath, "MySQLite.db3");
         	return new SQLiteAsyncConnection(path);
         }
+
     }
 }
 

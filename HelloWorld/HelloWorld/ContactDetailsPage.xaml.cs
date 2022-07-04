@@ -1,14 +1,9 @@
 ﻿using HelloWorld.Models;
+using HelloWorld.Persistence;
 using HelloWorld.Services;
 using HelloWorld.ViewModels;
-using SQLite;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -18,36 +13,25 @@ namespace HelloWorld
     public partial class ContactDetailsPage : ContentPage
     {
         Helper helper = new Helper();
-
         public ContactViewModel ViewModel
         {
             get { return BindingContext as ContactViewModel; }
             set { BindingContext = value; }
         }
 
-        // This contructor will be used to load contact details to be edited
         public ContactDetailsPage(ContactViewModel contactViewModel)
         {
-            if (contactViewModel.SelectedContact == null)
-                throw new ArgumentNullException("contact");
+            if (contactViewModel == null)
+                throw new ArgumentNullException(nameof(contactViewModel));
             ViewModel = contactViewModel;
             InitializeComponent();
         }
-
-        /// <summary>
-        /// This constructor should be used to load the page to create new contacts
-        /// </summary>
-        public ContactDetailsPage()
-        {
-            ViewModel = new ContactViewModel(new PageService());
-            InitializeComponent();
-        }
-
+        
         protected override void OnDisappearing()
         {
             // Refresh the contacts in the view model by making a fresh copy
             // This will help us deselect the listview
-            ViewModel.SelectedContact = null;
+            ViewModel.SelectedContact = null;            
             ViewModel.Contacts = new ObservableCollection<Contact>(ViewModel.Contacts);
             base.OnDisappearing();
         }
@@ -78,6 +62,7 @@ namespace HelloWorld
 
         private void ViewCell_Tapped(object sender, EventArgs e)
         {
+            //MessagingCenter.Subscribe<ContactGroupPage>(this,"SelectedContactGroup",SelectContactGroup(this,)
             var page = new ContactGroupsPage();
             page.ContactGroups.SelectedItem = ContactGroup.Text;
             page.ContactGroups.ItemSelected += (source, args) =>
@@ -86,6 +71,11 @@ namespace HelloWorld
                 Navigation.PopAsync();
             };
             Navigation.PushAsync(page);
+        }
+
+        private void SelectContactGroup(ContactDetailsPage page, string selectedContactGroup)
+        {
+            ContactGroup.Text = selectedContactGroup;
         }
     }
 }

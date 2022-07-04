@@ -1,14 +1,6 @@
-﻿using HelloWorld.Models;
-using HelloWorld.Services;
+﻿using HelloWorld.Persistence;
 using HelloWorld.ViewModels;
-using SQLite;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -17,7 +9,7 @@ namespace HelloWorld
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ContactsPage : ContentPage
     {
-       public ContactViewModel ViewModel
+        public ContactViewModel ViewModel
         {
             get { return BindingContext as ContactViewModel; }
             set { BindingContext = value; }
@@ -25,7 +17,9 @@ namespace HelloWorld
         bool _firstLoad;
         public ContactsPage()
         {
-            ViewModel = new ContactViewModel(new PageService());
+            var contactStore = new SQLiteContactStore(DependencyService.Get<ISQLiteDb>());
+            var pageService = new PageService();
+            ViewModel = new ContactViewModel(contactStore, pageService);
             InitializeComponent();
             _firstLoad = true;
         }

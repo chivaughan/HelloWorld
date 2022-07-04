@@ -4,12 +4,9 @@
              x:Class="HelloWorld.ContactsPage" NavigationPage.HasNavigationBar="False"
              xmlns:ic="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin" Title="Contacts">
     <StackLayout>
-        <StackLayout Orientation="Horizontal" Padding="5,5">
-            <Button Text="Refresh" Command="{Binding LoadContactsCommand}" HorizontalOptions="Start">
-            </Button>
-            <Button Text="+ Add" Command="{Binding GoToContactDetailsPageCommand}" HorizontalOptions="EndAndExpand">
-            </Button>            
-        </StackLayout>
+        <Button Text="+ Add" Command="{Binding GoToContactDetailsPageCommand}" HorizontalOptions="EndAndExpand">
+        </Button>
+        <Label Text="Swipe down to refresh" HorizontalOptions="Center"></Label>
         
         <ListView 
             Header="CONTACTS" 
