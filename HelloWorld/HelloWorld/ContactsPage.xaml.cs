@@ -37,14 +37,7 @@ namespace HelloWorld
 
             base.OnAppearing();
         }
-
-        private void MenuItem_Clicked(object sender, EventArgs e)
-        {
-            var menuItem = sender as MenuItem;
-            ViewModel.DeleteContactCommand.Execute(menuItem.CommandParameter);
-        }
-
-
+        
         private void lstContacts_Refreshing(object sender, EventArgs e)
         {
             ViewModel.LoadContactsCommand.Execute(null);

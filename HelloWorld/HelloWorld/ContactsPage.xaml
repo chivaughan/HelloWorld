@@ -2,12 +2,12 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="HelloWorld.ContactsPage" NavigationPage.HasNavigationBar="False"
-             xmlns:ic="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin" Title="Contacts">
+             xmlns:ic="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin" 
+             Title="Contacts"
+             x:Name="page">
     <StackLayout>
         <Button Text="+ Add" Command="{Binding GoToContactDetailsPageCommand}" HorizontalOptions="EndAndExpand">
-        </Button>
-        <Label Text="Swipe down to refresh" HorizontalOptions="Center"></Label>
-        
+        </Button>        
         <ListView 
             Header="CONTACTS" 
             ItemsSource="{Binding Contacts}"
@@ -22,7 +22,7 @@
                 <DataTemplate>
                     <ViewCell>
                         <ViewCell.ContextActions>
-                            <MenuItem Text="Delete" IsDestructive="True" CommandParameter="{Binding .}" Clicked="MenuItem_Clicked" >
+                            <MenuItem Text="Delete" IsDestructive="True" CommandParameter="{Binding .}" Command="{Binding Source={x:Reference page}, Path=ViewModel.DeleteContactCommand}" >
                             </MenuItem>
                         </ViewCell.ContextActions>
                         <StackLayout Padding="10">

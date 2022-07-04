@@ -1,5 +1,7 @@
 ﻿using HelloWorld.Models;
+using System;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -47,7 +49,8 @@ namespace HelloWorld.ViewModels
             }
         }
 
-        public async Task AddContact(string firstName, string lastName, string phone, string address, string email, bool blockedStatus, string imageUrl, string contactGroup)
+        public async Task AddContact(string firstName, string lastName, string phone, string address, string email, 
+            bool blockedStatus, string imageUrl, string contactGroup)
         {
             Contact contact = new Contact
             {
@@ -67,7 +70,8 @@ namespace HelloWorld.ViewModels
             await _pageService.PopAsync();
         }
 
-        public async Task UpdateContact(Contact contact, string firstName, string lastName, string phone, string address, string email, bool blockedStatus, string imageUrl, string contactGroup)
+        public async Task UpdateContact(Contact contact, string firstName, string lastName, 
+            string phone, string address, string email, bool blockedStatus, string imageUrl, string contactGroup)
         {
             contact.FirstName = firstName;
             contact.LastName = lastName;
@@ -79,10 +83,41 @@ namespace HelloWorld.ViewModels
             contact.ContactGroup = contactGroup;
             await _contactStore.UpdateContactAsync(contact);
             await _pageService.DisplayAlert("Saved", "Contact saved", "Ok");
-            
+            // Deselect the selected contact
+            SelectedContact = null;
             await _pageService.PopAsync();
         }
 
+        public async Task SaveContact(string firstName, string lastName, string phone, string address, 
+            string email, bool blockedStatus, string imageUrl, string contactGroup)
+        {
+            if (String.IsNullOrWhiteSpace(firstName) || String.IsNullOrWhiteSpace(lastName))
+            {
+                await _pageService.DisplayAlert("Name Required", "First & last name is required", "Ok");
+                return;
+            }
+            else
+            {
+                // Lets fetch the actual path for the imageurl
+                // This is the path where our images were saved earlier in the Helper class
+                // after the user selected a picture
+                if (!String.IsNullOrEmpty(imageUrl) || !String.IsNullOrWhiteSpace(imageUrl))
+                    imageUrl = Path.Combine(Xamarin.Essentials.FileSystem.CacheDirectory, Path.GetFileName(imageUrl));
+
+                if (SelectedContact != null)
+                {
+                    // At this point, we know it is an update action
+                    // Fetch the selected contact we have in the view model
+                    // and update the contact's details
+                    await UpdateContact(SelectedContact, firstName, lastName, phone, address, email, blockedStatus, imageUrl, contactGroup);
+                }
+                else
+                {
+                    // It is a new entry. So we add the contact
+                    await AddContact(firstName, lastName, phone, address, email, blockedStatus, imageUrl, contactGroup);
+                }
+            }
+        }
         private async void GoToContactDetailsPage()
         {
             PageTitle = "Add Contact";

@@ -1,12 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Text;
+using System.Threading.Tasks;
+using Xamarin.Essentials;
 
 namespace HelloWorld.Services
 {
     public class Helper
     {
+        public const string MovieRequestUri = "https://api.themoviedb.org/3/search/movie";
+        public const string MovieAPI_Key = "12b01729e9b5d623f878c6a4e1c30fde";
+        public string PhotoPath;
+
         private List<string> GetAllImages()
         {
             List<string> images = new List<string>
@@ -35,8 +41,49 @@ namespace HelloWorld.Services
             string imageUrl = GetAllImages()[randomIndex];
             return imageUrl;
         }
+        public async Task<string> TakePhotoAsync()
+        {
+            try
+            {
+                var photo = await MediaPicker.PickPhotoAsync();
+                await LoadPhotoAsync(photo);
+                //Console.WriteLine($"CapturePhotoAsync COMPLETED: {PhotoPath}");
+            }
+            catch (FeatureNotSupportedException fnsEx)
+            {
+                // Feature is not supported on the device
+            }
+            catch (PermissionException pEx)
+            {
+                // Permissions not granted
+            }
+            catch (Exception ex)
+            {
+                //Console.WriteLine($"CapturePhotoAsync THREW: {ex.Message}");
+            }
+            return PhotoPath;
+        }
 
-        public const string MovieRequestUri = "https://api.themoviedb.org/3/search/movie";
-        public const string MovieAPI_Key = "12b01729e9b5d623f878c6a4e1c30fde";
+        public async Task LoadPhotoAsync(FileResult photo)
+        {
+            // canceled
+            if (photo == null)
+            {
+                PhotoPath = null;
+            }
+            // save the file into local storage
+            
+            PhotoPath = await GetFilePath(photo);
+        }
+
+        public async Task<string> GetFilePath(FileResult file)
+        {
+            var newFile = Path.Combine(FileSystem.CacheDirectory, file.FileName);
+            using (var stream = await file.OpenReadAsync())
+            using (var newStream = File.OpenWrite(newFile))
+                await stream.CopyToAsync(newStream);
+            return newFile;
+        }
+         
     }
 }

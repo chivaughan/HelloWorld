@@ -6,6 +6,7 @@
              Title="{Binding PageTitle}">
     <StackLayout>
         <ic:CircleImage x:Name="Image" WidthRequest="200" HeightRequest="200" Aspect="AspectFill" Source="{Binding SelectedContact.ImageUrl}"></ic:CircleImage>
+        <Button Text="Choose Photo..." BorderRadius="30" x:Name="btnPhoto" Clicked="btnPhoto_Clicked"></Button>
         <TableView Intent="Form">
             <TableRoot>
                 <TableSection Title="Name">
